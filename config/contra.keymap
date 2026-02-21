@@ -90,7 +90,5 @@
 &out OUT_TOG    &none          &none          &none          &to 0          &none          &none  &none  &bt BT_PRV  &bt BT_NXT  &none  &none
             >;
         };
-
-        };
     };
 };

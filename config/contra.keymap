@@ -13,7 +13,6 @@
 #define NUM_MODS 1
 #define NUM_MOD 2
 #define BT_CTRL  3
-#define none 4
 
 / {
     combos {
@@ -92,13 +91,6 @@
             >;
         };
 
-        none {
-            bindings = <
-&none  &none  &none  &none  &none  &none  &none  &none  &none  &none  &none  &none
-&none  &none  &none  &none  &none  &none  &none  &none  &none  &none  &none  &none
-&none  &none  &none  &none  &none  &none  &none  &none  &none  &none  &none  &none
-&none  &none  &none  &none  &none  &none  &none  &none  &none  &none  &none  &none
-            >;
         };
     };
 };

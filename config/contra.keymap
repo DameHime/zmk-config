@@ -9,8 +9,10 @@
 #include <dt-bindings/zmk/keys.h>
 
 #define DEFAULT  0
-#define NUM_MODS 1
-#define BT_CTRL  2
+#define Fn_1 1
+#define Fn_2  2
+#define BT_CTRL  3
+#define layer_4  4
 
 &mt { tapping-term-ms = <150>; };
 
@@ -40,15 +42,24 @@
     };
 
     behaviors {
-        test_behavior: test_behavior {
-            compatible = "zmk,behavior-hold-tap";
-            label = "TEST_BEHAVIOR";
-            bindings = <&to>, <&mo>;
-
-            #binding-cells = <2>;
-            tapping-term-ms = <150>;
-            hold-trigger-key-positions = <43>;
-            hold-while-undecided;
+        // 1. Behavior buat Tap-Hold (Layer 1 + Shift)
+		// Hold-Tap "Layer 1 + Shift"
+		l1_shft: layer_one_shift {
+			compatible = "zmk,behaviors-hold-tap";
+			#binding-cells = <2>;
+			flavor = "hold-preferred";
+			tapping-term-ms = <150>;
+			binding = <&sk>, <&mo>; // sk= Sticky Key (Shift), mo = Momentary Layer
+		};
+		// 2. Behavior Utama ENTER
+		super_ent: super_enter {
+			compatible = "zmk,behaviors-tap-dance";
+			#binding-cells = <0>;
+			tapping-term-ms = <150>;
+			binding =
+				<&lt 1 ENTER>,
+				<&tog 1>,
+				<&l1_shft LSHIFT 1>;
         };
     };
 
@@ -61,7 +72,7 @@
 &kp ESC    &kp Q     &kp W     &kp E  &kp R        &kp T      &kp Y   &kp U        &kp I             &kp O                     &kp P              &kp BSPC
 &kp TAB    &kp A     &kp S     &kp D  &kp F        &kp G      &kp H   &kp J        &kp K             &kp L                     &kp SEMI           &kp SQT
 &kp LSHFT  &kp Z     &kp X     &kp C  &kp V        &kp B      &kp N   &kp M        &kp COMMA         &kp DOT                   &kp FSLH           &mt RIGHT_SHIFT ENTER
-&kp LCTRL  &kp LGUI  &kp LALT  &mo 2  &lt 1 ENTER  &kp SPACE  &trans  &lt 2 ENTER  &lt 1 LEFT_ARROW  &mt RIGHT_ALT DOWN_ARROW  &mt RGUI UP_ARROW  &mt RIGHT_CONTROL RIGHT_ARROW
+&kp LCTRL  &kp LGUI  &kp LALT  &mo 2  &super_ent   &kp SPACE  &trans  &lt 2 ENTER  &lt 1 LEFT_ARROW  &mt RIGHT_ALT DOWN_ARROW  &mt RGUI UP_ARROW  &mt RIGHT_CONTROL RIGHT_ARROW
             >;
         };
 
@@ -89,7 +100,7 @@
         bt_control {
             display-name = "Bt Control";
             bindings = <
-&bt BT_CLR      &bt BT_SEL 0   &bt BT_SEL 1   &bt BT_SEL 2   &bt BT_SEL 3   &bt BT_SEL 4   &none  &none  &none       &none       &none  &none
+&bt BT_CLR      &bt BT_SEL 0   &bt BT_SEL 1   &bt BT_SEL 2   &bt BT_SEL 3   &bt BT_SEL 4   &none  &none  &none       &none       &none  &bootloader
 &bt BT_CLR_ALL  &bt BT_DISC 0  &bt BT_DISC 1  &bt BT_DISC 2  &bt BT_DISC 3  &bt BT_DISC 4  &none  &none  &none       &none       &none  &none
 &studio_unlock  &none          &none          &none          &none          &none          &none  &none  &none       &none       &none  &studio_unlock
 &none           &none          &none          &none          &to 0          &none          &none  &none  &bt BT_PRV  &bt BT_NXT  &none  &none
